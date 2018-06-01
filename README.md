@@ -1,5 +1,5 @@
 # Python-Herding-Analysis
-In this project, I use Python to analyse the "Herding Behavior" for institutional analysts. I use Pandas (including Dataframe and Series), Numpy, Matplotlib, Seaborn and etc.
+In this project, I use Python to analyse the "Herding Behavior" for institutional analysts in Chinese stock market. I use Pandas, Numpy, Matplotlib, Seaborn and etc.
 
 The sample is 3999 stocks in ShangHai and Shenzhen stock exchange. Based on the estimated EPS (earnings per share), the estimate standard deviation and actual EPS, I construct the SUE(surprise unexpected earnings) and HI (herding index) using 
 matrix operations in Python.
