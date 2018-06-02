@@ -16,7 +16,8 @@ matrix operations in Python.
 ![image_eps](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/EPS.png)
 
 # calculate SUE and herding index
-   
+
+![image_HI1](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI1.png)
 
 
 # draw plot picture for different stock portfolios
