@@ -27,7 +27,7 @@ I find constant positive bias in analysts' earnings estimation from 2005.01.31 t
 
 
     def calculate_HI(threshold,df,HI_series):
-
+    
         for index,row in df.iterrows():
             total_num=0
             threshold_num=0
@@ -39,16 +39,30 @@ I find constant positive bias in analysts' earnings estimation from 2005.01.31 t
                 if x > 0:
                     total_num += 1
 
-        if total_num != 0:
-            HI_series[index] = threshold_num/total_num
+            if total_num == 0:
+                    HI_series[index] = 0
+
+            if total_num != 0:
+                    HI_series[index] = threshold_num/total_num
 
     HI_1 = {}
     calculate_HI(1,SUE,HI_1)
     HI_1 = Series(HI_1)
 
-    HI_3 = {}
-    calculate_HI(3,SUE,HI_3)
-    HI_3 = Series(HI_3)
+    HI_2 = {}
+    calculate_HI(2,SUE,HI_2)
+    HI_2 = Series(HI_2)
+
+    HI_5 = {}
+    calculate_HI(5,SUE,HI_5)
+    HI_5 = Series(HI_5)
+    
+    sns.distplot(HI_2, rug=True, hist=False)
+    plt.show()
+
+    sns.distplot(HI_5, rug=True, hist=False)
+    plt.show()
+    
 
 # Draw plot picture for different stock portfolios
     HI_1_stock = pd.concat([monthly_return,HI_1],axis=1)
