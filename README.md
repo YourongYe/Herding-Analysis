@@ -4,26 +4,30 @@ In this project, I use Python to analyse the "Herding Behavior" for institutiona
 The sample is 3999 stocks in ShangHai and Shenzhen stock exchange. Based on the estimated EPS (earnings per share), the estimate standard deviation and actual EPS, I construct the SUE(surprise unexpected earnings) and HI (herding index) using 
 matrix operations in Python.
 
-# compare EPS_actual and EPS_exp with timeline and industry
+# Compare estimated EPS and actual EPS 
+
+I find constant positive bias in analysts' earnings estimation from 2005.01.31 to 2017.12.29
+
     EPS_actual = eps_ttm.mean(1)
     EPS_actual = pd.DataFrame(EPS_actual)
-    EPS_actual=EPS_actual.rename(columns={0:'EPS_Actual'})
     EPS_exp = west_eps_FTM.mean(1)
     EPS_exp = pd.DataFrame(EPS_exp)
-    EPS_exp=EPS_exp.rename(columns={0:'EPS_exp'})
-    table = pd.concat([EPS_actual,EPS_exp,Industry_dic],axis=1)
+    table = pd.concat([EPS_actual,EPS_exp],axis=1)
+    table.plot()
+    plt.show()
  
 ![image_eps](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/EPS.png)
 
-# calculate SUE and herding index
+# Calculate SUE and herding index
+    SUE = abs(west_eps_2017-eps_ttm)/west_stdeps_2017
+    SUE_mean = SUE.mean(1)
+
+
+# Draw plot picture for different stock portfolios
 
 ![image_HI1](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI1.png)
 
-
-# draw plot picture for different stock portfolios
-
-
-
+![image_HI5](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI5.png)
 
 Refereces: 
 [1] Olsen, Robert A. "Implications of herding behavior for earnings estimation, risk assessment, and stock returns." Financial Analysts Journal 52.4 (1996): 37-41.
