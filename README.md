@@ -99,6 +99,8 @@ When I set the threshold to 5,and reset the interval for each portfolio based on
 
 # Herding index and abnormal return analysis
 
+![regression](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/regression.png)
+
 
 
 Refereces: 
