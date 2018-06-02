@@ -12,6 +12,8 @@ matrix operations in Python.
     EPS_exp = pd.DataFrame(EPS_exp)
     EPS_exp=EPS_exp.rename(columns={0:'EPS_exp'})
     table = pd.concat([EPS_actual,EPS_exp,Industry_dic],axis=1)
+ 
+![image_eps]https://github.com/YourongYe/Python-Herding-Analysis/blob/master/EPS.png
 
 # calculate SUE and herding index
    
