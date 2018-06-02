@@ -1,4 +1,4 @@
-# Python-Herding-Analysis
+# Herding-Analysis
 
 In this project, I use Python to analyse the "Herding Behavior" for institutional analysts in Chinese stock market. I use Pandas, Numpy, Matplotlib, Seaborn and etc.
 
