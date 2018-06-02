@@ -52,17 +52,22 @@ I find constant positive bias in analysts' earnings estimation from 2005.01.31 t
     HI_2 = {}
     calculate_HI(2,SUE,HI_2)
     HI_2 = Series(HI_2)
+  
+    sns.distplot(HI_2, rug=True, hist=False)
+    plt.show()
 
+The following picture shows the HI(X=2) distribution for all stocks during 2015-2017
+![HI_2_distribution](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI_2_distribution.png)
+    
     HI_5 = {}
     calculate_HI(5,SUE,HI_5)
     HI_5 = Series(HI_5)
     
-    sns.distplot(HI_2, rug=True, hist=False)
-    plt.show()
-
     sns.distplot(HI_5, rug=True, hist=False)
     plt.show()
     
+The following picture shows the HI(X=2) distribution for all stocks during 2015-2017
+![HI_5_distribution](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI_5_distribution.png)
 
 # Draw plot picture for different stock portfolios
     HI_1_stock = pd.concat([monthly_return,HI_1],axis=1)
