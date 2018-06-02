@@ -123,7 +123,8 @@ When I set the threshold to 5,and reset the interval for each portfolio based on
 
 ![OLS](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/OLS%20analysis.png)
 
-Refereces: 
+#### Refereces: 
+
 [1] Olsen, Robert A. "Implications of herding behavior for earnings estimation, risk assessment, and stock returns." Financial Analysts Journal 52.4 (1996): 37-41.
 
 [2] Nofsinger, John R., and Richard W. Sias. "Herding and feedback trading by institutional and individual investors." The Journal of finance 54.6 (1999): 2263-2295.
