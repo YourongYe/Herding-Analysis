@@ -20,12 +20,54 @@ I find constant positive bias in analysts' earnings estimation from 2005.01.31 t
 
 # Calculate SUE and herding index
     SUE = abs(west_eps_2017-eps_ttm)/west_stdeps_2017
-    SUE_mean = SUE.mean(1)
+    SUE = SUE.set_index('StockNo.')
+    SUE_stack = SUE.stack()
+    Outlier_value = SUE_stack.quantile(0.9995)
+    SUE = SUE[SUE<Outlier_value]
 
+
+    def calculate_HI(threshold,df,HI_series):
+
+        for index,row in df.iterrows():
+            total_num=0
+            threshold_num=0
+
+            for x in row:
+
+                if x > threshold:
+                    threshold_num += 1
+                if x > 0:
+                    total_num += 1
+
+        if total_num != 0:
+            HI_series[index] = threshold_num/total_num
+
+    HI_1 = {}
+    calculate_HI(1,SUE,HI_1)
+    HI_1 = Series(HI_1)
+
+    HI_3 = {}
+    calculate_HI(3,SUE,HI_3)
+    HI_3 = Series(HI_3)
 
 # Draw plot picture for different stock portfolios
+    HI_1_stock = pd.concat([monthly_return,HI_1],axis=1)
+    
+    def portfolio_build(downside,upside,df,column_name):
+        return df.loc[(df[column_name]>downside) & (df[column_name]<=upside)]
 
+    p1 = portfolio_build(0,0.33,HI_1_stock,0)
+    p2 = portfolio_build(0.33,0.66,HI_1_stock,0)
+    p3 = portfolio_build(0.66,1,HI_1_stock,0)
+    
+    
+    draw_plot= pd.concat([p1.mean(),p2.mean(),p3.mean(),hs300index_return],axis=1)
+    draw_plot.cumsum(0).plot()
+    plt.show()
+    
 ![image_HI1](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI1.png)
+    
+When I set the threshold to 5,and reset the interval for each portfolio based on the distribution, I get the following:
 
 ![image_HI5](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI5.png)
 
