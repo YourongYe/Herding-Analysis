@@ -1,16 +1,16 @@
 # Python-Herding-Analysis
+
 In this project, I use Python to analyse the "Herding Behavior" for institutional analysts in Chinese stock market. I use Pandas, Numpy, Matplotlib, Seaborn and etc.
 
-The sample is 3999 stocks in ShangHai and Shenzhen stock exchange. Based on the estimated EPS (earnings per share), the estimate standard deviation and actual EPS, I construct the SUE(surprise unexpected earnings) and HI (herding index) using 
-matrix operations in Python.
+The sample is 3999 stocks in ShangHai and Shenzhen stock exchange. And the sample period is 2005.1.31-2017.12.29. 
 
 # Compare estimated EPS and actual EPS 
 
-I find constant positive bias in analysts' earnings estimation from 2005.01.31 to 2017.12.29
+By calculating the monthly mean estimated EPS and actual EPS for all stocks through the timeline, I find constant positive bias in analysts' earnings estimation.
 
-    EPS_actual = eps_ttm.mean(1)
+    EPS_actual = eps_ttm.mean()
     EPS_actual = pd.DataFrame(EPS_actual)
-    EPS_exp = west_eps_FTM.mean(1)
+    EPS_exp = west_eps_FTM.mean()
     EPS_exp = pd.DataFrame(EPS_exp)
     table = pd.concat([EPS_actual,EPS_exp],axis=1)
     table.plot()
@@ -19,6 +19,10 @@ I find constant positive bias in analysts' earnings estimation from 2005.01.31 t
 ![image_eps](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/EPS.png)
 
 # Calculate SUE and herding index
+
+Based on the estimated EPS (earnings per share), the estimate standard deviation and actual EPS, I construct the SUE(surprise unexpected earnings) and HI (herding index) using 
+matrix operations in Python.
+
     SUE = abs(west_eps_2017-eps_ttm)/west_stdeps_2017
     SUE = SUE.set_index('StockNo.')
     SUE_stack = SUE.stack()
@@ -56,7 +60,7 @@ I find constant positive bias in analysts' earnings estimation from 2005.01.31 t
     sns.distplot(HI_2, rug=True, hist=False)
     plt.show()
 
-The following picture shows the HI(X=2) distribution for all stocks during 2015-2017
+The following picture shows the HI(X=2) distribution for all stocks during 2015-2017 (some data only available in this period)
 ![HI_2_distribution](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI_2_distribution.png)
     
     HI_5 = {}
@@ -66,18 +70,21 @@ The following picture shows the HI(X=2) distribution for all stocks during 2015-
     sns.distplot(HI_5, rug=True, hist=False)
     plt.show()
     
-The following picture shows the HI(X=2) distribution for all stocks during 2015-2017
+The following picture shows the HI(X=5) distribution for all stocks during 2015-2017 
 ![HI_5_distribution](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI_5_distribution.png)
 
 # Draw plot picture for different stock portfolios
-    HI_1_stock = pd.concat([monthly_return,HI_1],axis=1)
+
+I distribute all the stocks into different groups based on their HI values and then build portfolios and calculate their average monthly returns.
+
+    HI_2_stock = pd.concat([monthly_return,HI_2],axis=1)
     
     def portfolio_build(downside,upside,df,column_name):
         return df.loc[(df[column_name]>downside) & (df[column_name]<=upside)]
 
-    p1 = portfolio_build(0,0.33,HI_1_stock,0)
-    p2 = portfolio_build(0.33,0.66,HI_1_stock,0)
-    p3 = portfolio_build(0.66,1,HI_1_stock,0)
+    p1 = portfolio_build(0,0.33,HI_2_stock,0)
+    p2 = portfolio_build(0.33,0.66,HI_2_stock,0)
+    p3 = portfolio_build(0.66,1,HI_2_stock,0)
     
     
     draw_plot= pd.concat([p1.mean(),p2.mean(),p3.mean(),hs300index_return],axis=1)
