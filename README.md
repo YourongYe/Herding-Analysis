@@ -98,10 +98,30 @@ When I set the threshold to 5,and reset the interval for each portfolio based on
 ![image_HI5](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI5.png)
 
 # Herding index and abnormal return analysis
+    table_list = {}
+    group_num = 20
+    num = len(table_all)/group_num
+
+    for x in range(0,group_num):
+            forward = round(x*num)
+            back = round((x+1)*num)
+            portfolio = table_all.iloc[forward:back,:]
+            table_list[x] = portfolio.mean()
+
+    table_list = DataFrame(table_list)
+    table_list = table_list.T
+    sns.pairplot(table_list, x_vars=['HI_3'], y_vars='ABR %', size=7, aspect=0.8, kind='reg')
 
 ![regression](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/regression.png)
 
+    y=table_list['ABR %']
+    X=table_list[['HI_3','PE']]
+    X=sm.add_constant(X)
+    est=sm.OLS(y,X)
+    est=est.fit()
+    est.summary()
 
+![OLS](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/OLS%20analysis.png)
 
 Refereces: 
 [1] Olsen, Robert A. "Implications of herding behavior for earnings estimation, risk assessment, and stock returns." Financial Analysts Journal 52.4 (1996): 37-41.
