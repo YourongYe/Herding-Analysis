@@ -25,7 +25,7 @@ By calculating the monthly mean estimated EPS and actual EPS for all stocks thro
 Based on the estimated EPS (earnings per share), the estimate standard deviation and actual EPS, I construct the SUE(surprise unexpected earnings) and HI (herding index) using 
 matrix operations in Python.
 
-```
+```python
     SUE = abs(west_eps_2017-eps_ttm)/west_stdeps_2017
     SUE = SUE.set_index('StockNo.')
     SUE_stack = SUE.stack()
@@ -67,7 +67,7 @@ matrix operations in Python.
 The following picture shows the HI(X=2) distribution for all stocks during 2015-2017 (some data only available in this period)
 ![HI_2_distribution](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI_2_distribution.png)
     
-```
+```python
     HI_5 = {}
     calculate_HI(5,SUE,HI_5)
     HI_5 = Series(HI_5)
@@ -83,7 +83,7 @@ The following picture shows the HI(X=5) distribution for all stocks during 2015-
 
 I distribute all the stocks into different groups based on their HI values and then build portfolios and calculate their average monthly returns.
 
-```
+```python
     HI_2_stock = pd.concat([monthly_return,HI_2],axis=1)
     
     def portfolio_build(downside,upside,df,column_name):
@@ -107,7 +107,7 @@ When I set the threshold to 5,and reset the interval for each portfolio based on
 
 # Herding index and abnormal return analysis
 
-```
+```python
     table_list = {}
     group_num = 20
     num = len(table_all)/group_num
@@ -125,7 +125,7 @@ When I set the threshold to 5,and reset the interval for each portfolio based on
 
 ![regression](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/regression.png)
 
-```
+```python
     y=table_list['ABR %']
     X=table_list[['HI_3','PE']]
     X=sm.add_constant(X)
