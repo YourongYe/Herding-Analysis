@@ -33,7 +33,7 @@ Outlier_value = SUE_stack.quantile(0.9995)
 SUE = SUE[SUE<Outlier_value]
 
 
-def calculate_HI(threshold,df,HI_series):
+def calculate_HI(threshold,df,HI_dict):
 
     for index,row in df.iterrows():
         total_num=0
@@ -47,18 +47,18 @@ def calculate_HI(threshold,df,HI_series):
                 total_num += 1
 
         if total_num == 0:
-                HI_series[index] = 0
+                HI_dict[index] = 0
 
         else:
-                HI_series[index] = threshold_num/total_num
+                HI_dict[index] = threshold_num/total_num
 
-HI_1 = {}
-calculate_HI(1,SUE,HI_1)
-HI_1 = Series(HI_1)
+HI_1_dict = {}
+calculate_HI(1,SUE,HI_1_dict)
+HI_1 = Series(HI_1_dict)
 
-HI_2 = {}
-calculate_HI(2,SUE,HI_2)
-HI_2 = Series(HI_2)
+HI_2_dict = {}
+calculate_HI(2,SUE,HI_2_dict)
+HI_2 = Series(HI_2_dict)
 
 sns.distplot(HI_2, rug=True, hist=False)
 plt.show()
@@ -68,9 +68,9 @@ The following picture shows the HI(X=2) distribution for all stocks during 2015-
 ![HI_2_distribution](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI_2_distribution.png)
     
 ```python
-HI_5 = {}
-calculate_HI(5,SUE,HI_5)
-HI_5 = Series(HI_5)
+HI_5_dict = {}
+calculate_HI(5,SUE,HI_5_dict)
+HI_5 = Series(HI_5_dict)
 
 sns.distplot(HI_5, rug=True, hist=False)
 plt.show()
