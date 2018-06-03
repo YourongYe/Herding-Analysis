@@ -9,13 +9,13 @@ The sample is 3999 stocks in ShangHai and Shenzhen stock exchange. And the sampl
 By calculating the monthly mean estimated EPS and actual EPS for all stocks through the timeline, I find constant positive bias in analysts' earnings estimation.
 
 ```python
-    EPS_actual = eps_ttm.mean()
-    EPS_actual = pd.DataFrame(EPS_actual)
-    EPS_exp = west_eps_FTM.mean()
-    EPS_exp = pd.DataFrame(EPS_exp)
-    table = pd.concat([EPS_actual,EPS_exp],axis=1)
-    table.plot()
-    plt.show()
+EPS_actual = eps_ttm.mean()
+EPS_actual = pd.DataFrame(EPS_actual)
+EPS_exp = west_eps_FTM.mean()
+EPS_exp = pd.DataFrame(EPS_exp)
+table = pd.concat([EPS_actual,EPS_exp],axis=1)
+table.plot()
+plt.show()
 ```
  
 ![image_eps](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/EPS.png)
@@ -26,54 +26,54 @@ Based on the estimated EPS (earnings per share), the estimate standard deviation
 matrix operations in Python.
 
 ```python
-    SUE = abs(west_eps_2017-eps_ttm)/west_stdeps_2017
-    SUE = SUE.set_index('StockNo.')
-    SUE_stack = SUE.stack()
-    Outlier_value = SUE_stack.quantile(0.9995)
-    SUE = SUE[SUE<Outlier_value]
+SUE = abs(west_eps_2017-eps_ttm)/west_stdeps_2017
+SUE = SUE.set_index('StockNo.')
+SUE_stack = SUE.stack()
+Outlier_value = SUE_stack.quantile(0.9995)
+SUE = SUE[SUE<Outlier_value]
 
 
-    def calculate_HI(threshold,df,HI_series):
-    
-        for index,row in df.iterrows():
-            total_num=0
-            threshold_num=0
+def calculate_HI(threshold,df,HI_series):
 
-            for x in row:
+    for index,row in df.iterrows():
+        total_num=0
+        threshold_num=0
 
-                if x > threshold:
-                    threshold_num += 1
-                if x > 0:
-                    total_num += 1
+        for x in row:
 
-            if total_num == 0:
-                    HI_series[index] = 0
+            if x > threshold:
+                threshold_num += 1
+            if x > 0:
+                total_num += 1
 
-            if total_num != 0:
-                    HI_series[index] = threshold_num/total_num
+        if total_num == 0:
+                HI_series[index] = 0
 
-    HI_1 = {}
-    calculate_HI(1,SUE,HI_1)
-    HI_1 = Series(HI_1)
+        if total_num != 0:
+                HI_series[index] = threshold_num/total_num
 
-    HI_2 = {}
-    calculate_HI(2,SUE,HI_2)
-    HI_2 = Series(HI_2)
-  
-    sns.distplot(HI_2, rug=True, hist=False)
-    plt.show()
+HI_1 = {}
+calculate_HI(1,SUE,HI_1)
+HI_1 = Series(HI_1)
+
+HI_2 = {}
+calculate_HI(2,SUE,HI_2)
+HI_2 = Series(HI_2)
+
+sns.distplot(HI_2, rug=True, hist=False)
+plt.show()
 ```
 
 The following picture shows the HI(X=2) distribution for all stocks during 2015-2017 (some data only available in this period)
 ![HI_2_distribution](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI_2_distribution.png)
     
 ```python
-    HI_5 = {}
-    calculate_HI(5,SUE,HI_5)
-    HI_5 = Series(HI_5)
-    
-    sns.distplot(HI_5, rug=True, hist=False)
-    plt.show()
+HI_5 = {}
+calculate_HI(5,SUE,HI_5)
+HI_5 = Series(HI_5)
+
+sns.distplot(HI_5, rug=True, hist=False)
+plt.show()
 ```
     
 The following picture shows the HI(X=5) distribution for all stocks during 2015-2017 
@@ -84,19 +84,19 @@ The following picture shows the HI(X=5) distribution for all stocks during 2015-
 I distribute all the stocks into different groups based on their HI values and then build portfolios and calculate their average monthly returns.
 
 ```python
-    HI_2_stock = pd.concat([monthly_return,HI_2],axis=1)
-    
-    def portfolio_build(downside,upside,df,column_name):
-        return df.loc[(df[column_name]>downside) & (df[column_name]<=upside)]
+HI_2_stock = pd.concat([monthly_return,HI_2],axis=1)
 
-    p1 = portfolio_build(0,0.33,HI_2_stock,0)
-    p2 = portfolio_build(0.33,0.66,HI_2_stock,0)
-    p3 = portfolio_build(0.66,1,HI_2_stock,0)
-    
-    
-    draw_plot= pd.concat([p1.mean(),p2.mean(),p3.mean(),hs300index_return],axis=1)
-    draw_plot.cumsum(0).plot()
-    plt.show()
+def portfolio_build(downside,upside,df,column_name):
+    return df.loc[(df[column_name]>downside) & (df[column_name]<=upside)]
+
+p1 = portfolio_build(0,0.33,HI_2_stock,0)
+p2 = portfolio_build(0.33,0.66,HI_2_stock,0)
+p3 = portfolio_build(0.66,1,HI_2_stock,0)
+
+
+draw_plot= pd.concat([p1.mean(),p2.mean(),p3.mean(),hs300index_return],axis=1)
+draw_plot.cumsum(0).plot()
+plt.show()
 ```
     
 ![image_HI1](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/HI1.png)
@@ -108,30 +108,30 @@ When I set the threshold to 5,and reset the interval for each portfolio based on
 # Herding index and abnormal return analysis
 
 ```python
-    table_list = {}
-    group_num = 20
-    num = len(table_all)/group_num
+table_list = {}
+group_num = 20
+num = len(table_all)/group_num
 
-    for x in range(0,group_num):
-            forward = round(x*num)
-            back = round((x+1)*num)
-            portfolio = table_all.iloc[forward:back,:]
-            table_list[x] = portfolio.mean()
+for x in range(0,group_num):
+        forward = round(x*num)
+        back = round((x+1)*num)
+        portfolio = table_all.iloc[forward:back,:]
+        table_list[x] = portfolio.mean()
 
-    table_list = DataFrame(table_list)
-    table_list = table_list.T
-    sns.pairplot(table_list, x_vars=['HI_3'], y_vars='ABR %', size=7, aspect=0.8, kind='reg')
+table_list = DataFrame(table_list)
+table_list = table_list.T
+sns.pairplot(table_list, x_vars=['HI_3'], y_vars='ABR %', size=7, aspect=0.8, kind='reg')
 ```
 
 ![regression](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/regression.png)
 
 ```python
-    y=table_list['ABR %']
-    X=table_list[['HI_3','PE']]
-    X=sm.add_constant(X)
-    est=sm.OLS(y,X)
-    est=est.fit()
-    est.summary()
+y=table_list['ABR %']
+X=table_list[['HI_3','PE']]
+X=sm.add_constant(X)
+est=sm.OLS(y,X)
+est=est.fit()
+est.summary()
 ```
 
 ![OLS](https://github.com/YourongYe/Python-Herding-Analysis/blob/master/OLS%20analysis.png)
