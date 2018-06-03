@@ -49,7 +49,7 @@ def calculate_HI(threshold,df,HI_series):
         if total_num == 0:
                 HI_series[index] = 0
 
-        if total_num != 0:
+        else:
                 HI_series[index] = threshold_num/total_num
 
 HI_1 = {}
