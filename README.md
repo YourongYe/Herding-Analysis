@@ -8,7 +8,7 @@ The sample is 3999 stocks in ShangHai and Shenzhen stock exchange. And the sampl
 
 By calculating the monthly mean estimated EPS and actual EPS for all stocks through the timeline, I find constant positive bias in analysts' earnings estimation.
 
-```
+```python
     EPS_actual = eps_ttm.mean()
     EPS_actual = pd.DataFrame(EPS_actual)
     EPS_exp = west_eps_FTM.mean()
